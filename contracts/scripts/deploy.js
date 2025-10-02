@@ -7,34 +7,34 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 async function main() {
-  console.log("🚀 Starting ChainCircle deployment...\n");
+  console.log("Starting ChainCircle deployment...\n");
 
   const [deployer] = await hre.ethers.getSigners();
-  console.log("📍 Deploying contracts with account:", deployer.address);
+  console.log("Deploying contracts with account:", deployer.address);
   
   const balance = await hre.ethers.provider.getBalance(deployer.address);
-  console.log("💰 Account balance:", hre.ethers.formatEther(balance), "ETH\n");
+  console.log("Account balance:", hre.ethers.formatEther(balance), "ETH\n");
 
-  console.log("📝 Deploying Reputation contract...");
+  console.log("Deploying Reputation contract...");
   const Reputation = await hre.ethers.getContractFactory("Reputation");
   const reputation = await Reputation.deploy();
   await reputation.waitForDeployment();
   const reputationAddress = await reputation.getAddress();
-  console.log("✅ Reputation deployed to:", reputationAddress);
+  console.log("SUCCESS: Reputation deployed to:", reputationAddress);
 
-  console.log("\n📝 Deploying ChainCircle contract...");
+  console.log("\nDeploying ChainCircle contract...");
   const protocolTreasury = deployer.address;
   
   const ChainCircle = await hre.ethers.getContractFactory("ChainCircle");
   const chainCircle = await ChainCircle.deploy(protocolTreasury);
   await chainCircle.waitForDeployment();
   const chainCircleAddress = await chainCircle.getAddress();
-  console.log("✅ ChainCircle deployed to:", chainCircleAddress);
+  console.log("SUCCESS: ChainCircle deployed to:", chainCircleAddress);
 
-  console.log("\n🔗 Authorizing ChainCircle to update reputation...");
+  console.log("\nAuthorizing ChainCircle to update reputation...");
   const authTx = await reputation.authorizeCaller(chainCircleAddress);
   await authTx.wait();
-  console.log("✅ Authorization complete");
+  console.log("SUCCESS: Authorization complete");
 
   const deploymentInfo = {
     network: hre.network.name,
@@ -58,8 +58,8 @@ async function main() {
   );
   fs.writeFileSync(filename, JSON.stringify(deploymentInfo, null, 2));
 
-  console.log("\n📄 Deployment info saved to:", filename);
-  console.log("\n🎉 Deployment complete!\n");
+  console.log("\nDeployment info saved to:", filename);
+  console.log("\nDeployment complete!\n");
   console.log("Contract Addresses:");
   console.log("==================");
   console.log("ChainCircle:", chainCircleAddress);
@@ -69,6 +69,6 @@ async function main() {
 main()
   .then(() => process.exit(0))
   .catch((error) => {
-    console.error("❌ Deployment failed:", error);
+    console.error("ERROR: Deployment failed:", error);
     process.exit(1);
   });
