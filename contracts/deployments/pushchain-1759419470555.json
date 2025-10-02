@@ -1,0 +1,10 @@
+{
+  "network": "pushchain",
+  "chainId": "42101",
+  "deployer": "0xc40Ae0D1653F2e34e67AC746d122f17bcf350DA4",
+  "contracts": {
+    "ChainCircle": "0x22ED52a8E428D631BA04A622d9982C80Dae5a208",
+    "Reputation": "0xE3dA2CF5fae3989D0911BE692524502bc111153E"
+  },
+  "timestamp": "2025-10-02T15:37:50.554Z"
+}
